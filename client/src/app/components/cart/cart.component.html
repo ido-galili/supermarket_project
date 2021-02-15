@@ -1,0 +1,152 @@
+<div class="cart-container">
+  <div *ngIf="this.store.user.role === 2" class="cart">
+    <div class="cart-header d-flex justify-content-between align-items-center">
+      <h2>Cart</h2>
+      <div>
+        <i
+          class="cart-delete-button fas fa-trash fa-2x mr-2"
+          (click)="removeAllItemsFromCart()"
+        >
+        </i>
+        <i
+          class="cart-close-btn far fa-times-circle fa-2x"
+          (click)="this.store.toggleSideBar()"
+        ></i>
+      </div>
+    </div>
+    <div class="cart-items">
+      <div
+        class="cart-item card mb-3"
+        *ngFor="let item of this.store.cart.items"
+      >
+        <i
+          class="fas fa-trash close-btn"
+          (click)="this.removeItemFromCart(item._id, item.totalPrice)"
+        ></i>
+        <div class="row no-gutters h-100">
+          <div class="col-4">
+            <img [src]="item.image" [alt]="item.name" class="cart-item-image" />
+          </div>
+          <div class="col-8">
+            <div class="card-body cart-item-details">
+              <h5 class="card-title">{{ item.name || "" }}</h5>
+              <p class="card-text">Quantity: {{ item.quantity }}</p>
+              <p class="card-text">Price: {{ item.totalPrice }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cart-footer d-flex align-items-center justify-content-between">
+      <div class="total-price">
+        Total: {{ this.store.cart.totalPrice }}
+        <span class="ml-2">
+          <i class="fas fa-shekel-sign"></i>
+        </span>
+      </div>
+      <div>
+        <button (click)="this.goToOrder()" class="btn btn-outline-light btn-lg">
+          Order
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="this.store.user.role === 1" class="cart">
+    <div class="cart-header d-flex justify-content-between align-items-center">
+      <h2>Admin</h2>
+      <div>
+        <i
+          class="cart-plus-button fas fa-cart-plus fa-2x mr-2"
+          (click)="newForm()"
+        >
+        </i>
+        <i
+          class="cart-close-btn far fa-times-circle fa-2x"
+          (click)="this.store.toggleSideBar()"
+        ></i>
+      </div>
+    </div>
+    <div 
+    *ngIf="this.store.editProduct.name" 
+    class="card mb-3" 
+    style="max-width: 540px;"
+    [ngClass]="this.store.edit ? 'd-block' : 'd-none'"
+    >
+      <div class="row no-gutters">
+        <div class="col-md-4">
+          <img
+            [src]="this.store.editProduct.image"
+            class="cart-item-image"
+            alt="..."
+          />
+        </div>
+        <div class="col-md-8">
+          <div class="card-body cart-item-details">
+            <h5 class="card-title">{{ this.store.editProduct.name }}</h5>
+            <p class="card-text">Price: {{ this.store.editProduct.price }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="admin-form" [ngClass]="this.store.edit || this.store.new ? 'd-block' : 'd-none'">
+      <form 
+      id="edit-form" 
+      >
+        <div class="form-group">
+          <label for="category">Category</label>
+          <select
+            name="category"
+            class="form-control"
+            id="category"
+            [(ngModel)]="this.store.editProduct.categoryId"
+          >
+            <option 
+            *ngFor="let category of this.store.categories" 
+            [selected]="category._id === this.store.editProduct.categoryId"
+            [value]="category._id">
+              {{ category.name }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="edit-name">Name</label>
+          <input
+            type="text"
+            name="edit-name"
+            class="form-control"
+            id="edit-name"
+            [value]="this.store.editProduct.name"
+            [(ngModel)]="this.store.editProduct.name"
+          />
+        </div>
+        <div class="form-group">
+          <label for="edit-price">Price</label>
+          <input
+            type="text"
+            name="edit-price"
+            class="form-control"
+            id="edit-price"
+            [value]="this.store.editProduct.price"
+            [(ngModel)]="this.store.editProduct.price"
+          />
+        </div>
+        <div class="form-group">
+          <label for="edit-image">Image</label>
+          <input
+            type="text"
+            name="edit-image"
+            class="form-control"
+            id="edit-image"
+            [value]="this.store.editProduct.image"
+            [(ngModel)]="this.store.editProduct.image"
+          />
+        </div>
+      </form>
+      <button
+      (click)="saveProduct()" 
+      class="btn btn-block btn-outline-info btn-lg mt-3">
+          Save
+      </button>
+    </div>
+</div>

@@ -1,0 +1,204 @@
+<div class="order">
+  <div class="row mb-3">
+    <div class="offset-3 col-6 order-search">
+      <form class="form-inline w-100">
+        <div class="form-group order-search-container">
+          <input
+            type="search"
+            name="order-search"
+            class="form-control w-100 border-info"
+            id="order-search"
+            placeholder="Product name"
+            [(ngModel)]="searchQuery"
+          />
+        </div>
+        <button
+          (click)="searchProductInOrder()"
+          class="btn btn-outline-info ml-3"
+        >
+          Search
+        </button>
+      </form>
+    </div>
+  </div>
+  <div class="row justify-content-center h-100">
+    <div class="col-6 order-cart order-section mr-3">
+      <div
+        class="order-cart-header d-flex justify-content-between align-items-center"
+      >
+        <h2>Cart</h2>
+        <div>
+          <button class="btn btn-outline-light" [routerLink]="['/main']">
+            Back to shop
+          </button>
+        </div>
+      </div>
+      <div class="cart-items">
+        <div
+          class="cart-item card mb-3"
+          *ngFor="let item of this.store.cart.items"
+        >
+          <div class="row no-gutters h-100">
+            <div class="col-4">
+              <img
+                [src]="item.image"
+                [alt]="item.name"
+                class="cart-item-image"
+              />
+            </div>
+            <div class="col-8">
+              <div class="card-body cart-item-details">
+                <h5 class="card-title">{{ item.name }}</h5>
+                <p class="card-text">Quantity: {{ item.quantity }}</p>
+                <p class="card-text">Price: {{ item.totalPrice }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="cart-footer d-flex align-items-center justify-content-between"
+      >
+        <div class="total-price">
+          Total: {{ this.store.cart.totalPrice }}
+          <span class="ml-2">
+            <i class="fas fa-shekel-sign"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 order-details order-section">
+      <div
+        class="order-details-header d-flex justify-content-between align-items-center"
+      >
+        <h2>Order</h2>
+      </div>
+      <div class="order-details-form">
+        <form>
+          <h3>Shipping Details</h3>
+          <div class="form-group">
+            <label
+              for="order-city"
+              (dblclick)="
+                this.fillInput(
+                  'order-city',
+                  this.store.user.city,
+                  'deliveryCity'
+                )
+              "
+            >
+              City
+            </label>
+            <select
+              name="order-city"
+              class="form-control"
+              id="order-city"
+              [(ngModel)]="order.deliveryCity"
+            >
+              <option value="0">Select your city..</option>
+              <option *ngFor="let city of this.store.cities" value="{{ city }}">
+                {{ city }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label
+              for="order-street"
+              (dblclick)="
+                this.fillInput(
+                  'order-street',
+                  this.store.user.street,
+                  'deliveryAddress'
+                )
+              "
+              >Street</label
+            >
+            <input
+              (dblclick)="
+                this.fillInput(
+                  'order-street',
+                  this.store.user.street,
+                  'deliveryAddress'
+                )
+              "
+              type="text"
+              name="order-street"
+              class="form-control"
+              id="order-street"
+              placeholder="street 21/4"
+              [(ngModel)]="order.deliveryAddress"
+            />
+          </div>
+          <div class="form-group">
+            <label for="shipping-date">Shipping Date</label>
+            <br />
+            <input
+              type="date"
+              id="shipping-date"
+              name="shipping-date"
+              class="form-control"
+              value="this.datePickerMin"
+              [min]="this.datePickerMin"
+              [(ngModel)]="order.deliveryDate"
+            />
+          </div>
+          <h3>Payments</h3>
+          <div class="form-group">
+            <label for="order-credit-card">Credit Card</label>
+            <input
+              type="text"
+              name="order-credit-card"
+              class="form-control"
+              id="order-credit-card"
+              placeholder=""
+              [(ngModel)]="order.creditCard"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="order-details-footer">
+        <button
+          (click)="this.orderCart()"
+          class="btn btn-block btn-outline-light"
+        >
+          Order
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div
+    [ngClass]="{
+      show: this.popupOpen
+    }"
+    class="order-popup-container"
+  >
+    <div *ngIf="!this.error" class="order-popup d-flex flex-column" >
+      <h2>Your order was confirmed!</h2>
+      <div>
+        <a 
+        class="btn btn-block btn-outline-info mb-3" 
+        href="http://localhost:5000/api/store/order_receipt/{{this.cartId}}"
+        target="_blank"
+        >
+        Download receipt</a>
+      </div>
+      <button
+        (click)="this.dismissPopup()"
+        class="btn btn-block btn-outline-success"
+      >
+        OK
+      </button>
+    </div>
+    <div *ngIf="this.error" class="order-popup d-flex flex-column">
+      <h2>{{this.title}}</h2>
+      <h3>{{this.message}}</h3>
+      <button
+        (click)="this.dismissPopup()"
+        class="btn btn-block btn-outline-danger"
+      >
+        Try Again
+      </button>
+    </div>
+  </div>
+</div>

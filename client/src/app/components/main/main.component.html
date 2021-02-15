@@ -1,0 +1,80 @@
+<div class="store-main container">
+  <div class="row">
+    <div class="col-3" [ngClass]="this.store.cartOpen ? 'd-block' : 'd-none'">
+      <app-side-bar></app-side-bar>
+    </div>
+    <div [ngClass]="this.store.cartOpen ? 'col-9' : 'col-12'">
+      <div class="search-nav mb-3">
+        <form class="form-inline w-100">
+          <div class="form-group search-container">
+            <input
+              type="search"
+              name="search"
+              class="form-control w-100 border-info"
+              id="search"
+              placeholder="Search for products..."
+              [(ngModel)]="searchQuery"
+            />
+          </div>
+          <button (click)="searchProducts()" class="btn btn-outline-info ml-3">
+            Search
+          </button>
+        </form>
+      </div>
+      <div class="products-nav mb-3">
+        <div
+          *ngFor="let category of this.store.categories"
+          class="products-nav-item"
+          [class.active]="this.activeCategory === category._id"
+          (click)="getProductsByCategory(category._id)"
+        >
+          {{ category.name }}
+        </div>
+      </div>
+      <div class="products-cards d-flex justify-content-start flex-wrap">
+        <div
+          *ngFor="let product of products"
+          class="card product-card mb-3 mr-3"
+          (click)="this.store.user.role === 1 ? editProduct(product) : showModal(product)"
+        >
+          <img
+            [src]="product.image"
+            class="card-img-top products-card-img"
+            [alt]="product.name"
+          />
+          <div class="card-body">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <div class="d-flex align-items-center justify-content-start">
+              <i class="fas fa-shekel-sign mr-2"></i>
+              <p class="card-text">{{ product.price }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div [ngClass]="{ show: this.isModalOpen }" class="product-popup-container">
+    <div class="product-popup d-flex flex-column">
+      <i class="fas fa-times fa-2x close-btn" (click)="this.dismissModal()"></i>
+      <h5>{{this.selectedProduct && this.selectedProduct.name}}</h5>
+      <form class="form w-100" id="product-popup-form">
+        <div class="form-group search-container">
+          <label for="quantity">Pick quantity</label>
+          <input
+            type="number"
+            name="quantity"
+            min="1"
+            class="form-control w-100 mb-3"
+            id="quantity"
+            value=0
+            [(ngModel)]="productQuantity"
+          />
+        </div>
+        <button (click)="addToCart()" class="btn btn-block btn-outline-success">
+          Add to Cart
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

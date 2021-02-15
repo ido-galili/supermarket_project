@@ -1,0 +1,37 @@
+<nav
+  class="top-nav d-flex justify-content-between align-items-center pr-5 pl-5"
+>
+  <div>
+    <i class="fab fa-pied-piper-alt fa-3x text-warning"></i>
+  </div>
+  <div class="top-nav__brand" [routerLink]="['']">
+    Samurai Market
+  </div>
+  <div class="d-flex align-items-center">
+    <div class="mr-3">
+      <div class="name">{{this.store.user && this.store.user.firstName}} {{this.store.user && this.store.user.lastName}}</div>
+      <div class="name">{{this.store.user && this.store.user.email}}</div>
+    </div>
+    <div
+    [ngClass]="this.store.isLoggedIn && this.router.url === '/main' ? 'd-block' : 'd-none'"
+    class="top-nav__side-bar-button">
+      <i
+        class="fas fa-shopping-cart fa-2x mr-2"
+        (click)="this.store.toggleSideBar()"
+      >
+      </i>
+    </div>
+    <div
+    [ngClass]="{
+      'd-block': this.store.isLoggedIn,
+      'd-none': !this.store.isLoggedIn
+    }" 
+    class="top-nav__side-bar-button">
+      <i
+        class="fas fa-sign-out-alt fa-2x align-items-center d-flex"
+        (click)="this.store.signOut()"
+      >
+    </i>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,33 @@
+.top-nav {
+  height: 65px;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  z-index: 10;
+}
+
+.top-nav .top-nav__brand {
+  font-size: 30px;
+  cursor: pointer;
+  background-color: transparent;
+  outline: none;
+
+  &:hover {
+    color: lightseagreen;
+  }
+}
+
+.top-nav .top-nav__side-bar-button {
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    color: lightseagreen;
+  }
+
+  .name {
+    font-size: 18px;
+  }
+}

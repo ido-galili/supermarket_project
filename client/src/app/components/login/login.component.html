@@ -1,0 +1,67 @@
+<div
+  class="login-section landing-section d-flex flex-column justify-content-center align-items-center"
+>
+  <div [ngClass]="this.store.isLoggedIn ? 'd-block' : 'd-none'">
+    <button
+      *ngIf="this.store.cart.items.length === 0"
+      class="btn btn-outline-dark btn-block"
+      [routerLink]="['/main']"
+    >
+      Start Shopping
+    </button>
+    <button
+      *ngIf="this.store.cart.items.length > 0"
+      class="btn btn-outline-dark btn-block"
+      [routerLink]="['/main']"
+    >
+      Continue Shopping
+    </button>
+  </div>
+  <div [ngClass]="this.store.isLoggedIn ? 'd-none' : 'd-block'">
+    <form>
+      <div class="form-group">
+        <label for="email">Email address</label>
+        <input
+          type="email"
+          name="email"
+          class="form-control"
+          id="email"
+          placeholder="john@doe.com"
+          [(ngModel)]="user.email"
+        />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          name="passowrd"
+          class="form-control"
+          id="password"
+          placeholder="password"
+          [(ngModel)]="user.password"
+        />
+      </div>
+      <div class="d-flex justify-content-between w-100">
+        <button class="btn btn-outline-success w-50 mr-1" (click)="login()">
+          Login
+        </button>
+        <button
+          [routerLink]="['/signup']"
+          class="btn btn-outline-dark w-50"
+        >
+          Signup
+        </button>
+      </div>
+    </form>
+    <div
+      class="alert alert-danger mt-2"
+      [ngClass]="this.alert.error ? 'd-block' : 'd-none'"
+      role="alert"
+    >
+      <h4 class="alert-heading">{{ this.alert.title }}</h4>
+      <p>
+        {{ this.alert.message }}
+      </p>
+    </div>
+  </div>
+</div>
